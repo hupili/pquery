@@ -3,7 +3,7 @@ pquery
 
 grep for HTML; CLI for pyquery
 
-## Demo
+## Example
 
 ```
 $curl -s https://github.com/hupili/pquery | pquery '.content a' -p text
@@ -14,8 +14,6 @@ README.md
 pquery
 setup.py
 ```
-
-`pquery` is intended to integrate into your UNIX pipeline.
 
 ## Syntax
 
@@ -45,17 +43,3 @@ Dict keys:
 HTML is structured and not line processor friendly.
 CSS selector is a natural grep for HTML.
 This script simply wraps [pyquery](http://pyquery.readthedocs.org/en/latest/) to provide a CLI.
-
-## Example 1
-
-A [course webpage](https://class.coursera.org/crypto-008/wiki/LectureSlidesPublicCourse)
-lists slides in `pdf` and `pptx`.
-Want to download all the PDFs.
-This saves you some click.
-
-```
-wget --load-cookies=cookies.txt -O- 'https://class.coursera.org/crypto-008/wiki/LectureSlidesPublicCourse' | pquery a -p href | grep pdf | xargs -P 5 -I{} wget {}
-```
-
-It's tedious to directly grep the PDF links out from HTML.
-
