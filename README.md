@@ -17,6 +17,10 @@ setup.py
 
 `pquery` is intended to integrate into your UNIX pipeline.
 
+## Install
+
+`pip install pquery`
+
 ## Syntax
 
 ```
