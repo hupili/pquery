@@ -31,7 +31,7 @@ from pyquery import PyQuery as pq
 def array_output(a):
     for i in a:
         if i:
-            sys.stdout.write(str(i) + '\n')
+            sys.stdout.write(i.encode('utf-8') + '\n')
 
 def project(a, projector):
     # For initial version, only support grepping one field.
@@ -61,7 +61,7 @@ def html_element_to_dict(a):
         yield d
 
 if __name__ == '__main__':
-    args = docopt.docopt(__doc__, version='0.1')
+    args = docopt.docopt(__doc__, version='0.2')
     html = sys.stdin.read()
     d = pq(html)
     matches = d(args['<selector>'])
