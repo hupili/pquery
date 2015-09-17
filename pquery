@@ -26,6 +26,10 @@ import sys
 import docopt
 from pyquery import PyQuery as pq
 
+# The format string may contain some key that does not exist in dict.
+# Maximum number of trials are specified here.
+MAX_FORMAT_TRIAL = 20
+
 # The workflow is driven by iterator/generator
 
 def array_output(a):
@@ -41,8 +45,23 @@ def project(a, projector):
         yield i.get(projector, None)
 
 def format_dict(a, format_string):
+    import exceptions
+    import copy
     for i in a:
-        yield format_string.format(**i)
+        d = copy.deepcopy(i)
+        success = False
+        for j in range(MAX_FORMAT_TRIAL):
+            try:
+                ret = format_string.format(**d)
+                yield ret
+                success = True
+                break
+            except exceptions.KeyError as e:
+                # e.message contains the non-exist key
+                d[e.message] = None
+                # sys.stderr.write('KeyError "%s"\n' % e.message)
+        if not success:
+            sys.stderr.write('Max number of formating trials reached. Format string: "%s". Dict: %s .\n' % (format_string, i))
 
 def html_element_to_dict(a):
     for i in a:
@@ -69,6 +88,6 @@ if __name__ == '__main__':
     if args['<projector>']:
         data = project(data, args['<projector>'])
     if args['<format_string>']:
-        data = format_dict(data, args['<format_string>'])
+        data = format_dict(data, args['<format_string>'].decode('utf-8'))
     array_output(data)
 
