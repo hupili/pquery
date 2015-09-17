@@ -23,6 +23,9 @@ Dict keys:
 '''
 
 import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 import docopt
 from pyquery import PyQuery as pq
 
@@ -35,7 +38,9 @@ MAX_FORMAT_TRIAL = 20
 def array_output(a):
     for i in a:
         if i:
-            sys.stdout.write(i.encode('utf-8') + '\n')
+            # 'i' may be a dict.
+            # .encode('utf-8') does not work here.
+            sys.stdout.write(str(i) + '\n')
 
 def project(a, projector):
     # For initial version, only support grepping one field.
@@ -88,6 +93,6 @@ if __name__ == '__main__':
     if args['<projector>']:
         data = project(data, args['<projector>'])
     if args['<format_string>']:
-        data = format_dict(data, args['<format_string>'].decode('utf-8'))
+        data = format_dict(data, args['<format_string>'])
     array_output(data)
 
