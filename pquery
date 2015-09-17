@@ -93,6 +93,6 @@ if __name__ == '__main__':
     if args['<projector>']:
         data = project(data, args['<projector>'])
     if args['<format_string>']:
-        data = format_dict(data, args['<format_string>'])
+        data = format_dict(data, unicode(args['<format_string>']).decode('string_escape'))
     array_output(data)
 
