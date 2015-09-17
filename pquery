@@ -85,7 +85,7 @@ def html_element_to_dict(a):
         yield d
 
 if __name__ == '__main__':
-    args = docopt.docopt(__doc__, version='0.3')
+    args = docopt.docopt(__doc__)
     html = sys.stdin.read()
     d = pq(html)
     matches = d(args['<selector>'])

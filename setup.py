@@ -14,7 +14,7 @@ INSTALL_REQUIRES=[
 ]
 
 setup(name='pquery',
-      version='1.0',
+      version='1.1',
       description='grep for HTML; CLI for pyquery',
       author='Pili Hu',
       author_email='me@hupili.net',
