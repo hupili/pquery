@@ -31,13 +31,13 @@ try:
     reload(sys)
     sys.setdefaultencoding('utf-8')
     # This is python2..
-    sys.stderr.write('PYTHON2=True\n')
+    #sys.stderr.write('PYTHON2=True\n')
 except Exception as e:
     print(e)
     # noop with e...
     # This is python3..
     PYTHON2 = False
-    sys.stderr.write('PYTHON2=False\n')
+    #sys.stderr.write('PYTHON2=False\n')
 
 import docopt
 from pyquery import PyQuery as pq
