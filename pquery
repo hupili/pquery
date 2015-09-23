@@ -23,8 +23,19 @@ Dict keys:
 '''
 
 import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+
+PYTHON2 = True
+
+try:
+    from imp import reload
+    PYTHON2 = False
+    # This is python3..
+except Exception as e:
+    # noop with e...
+    # This is python2..
+    import sys
+    sys.setdefaultencoding('utf-8')
+    reload(sys)
 
 import docopt
 from pyquery import PyQuery as pq
@@ -50,7 +61,11 @@ def project(a, projector):
         yield i.get(projector, None)
 
 def format_dict(a, format_string):
-    import exceptions
+    #try:
+    #    from exceptions import KeyError
+    #except Exception as e:
+    #    # Python3 here
+    #    pass
     import copy
     for i in a:
         d = copy.deepcopy(i)
@@ -61,9 +76,13 @@ def format_dict(a, format_string):
                 yield ret
                 success = True
                 break
-            except exceptions.KeyError as e:
+            except KeyError as e:
                 # e.message contains the non-exist key
-                d[e.message] = None
+                if PYTHON2:
+                    key = e.message
+                else:
+                    key = e.args[0]
+                d[key] = None
                 # sys.stderr.write('KeyError "%s"\n' % e.message)
         if not success:
             sys.stderr.write('Max number of formating trials reached. Format string: "%s". Dict: %s .\n' % (format_string, i))
@@ -89,10 +108,13 @@ if __name__ == '__main__':
     html = sys.stdin.read()
     d = pq(html)
     matches = d(args['<selector>'])
-    data = html_element_to_dict(matches.items())
+    data = html_element_to_dict(list(matches.items()))
     if args['<projector>']:
         data = project(data, args['<projector>'])
     if args['<format_string>']:
-        data = format_dict(data, unicode(args['<format_string>']).decode('string_escape'))
+        if PYTHON2:
+            data = format_dict(data, unicode(args['<format_string>']).decode('string_escape'))
+        else:
+            data = format_dict(data, args['<format_string>'])
     array_output(data)
 
