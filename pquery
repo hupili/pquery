@@ -23,19 +23,21 @@ Dict keys:
 '''
 
 import sys
-
 PYTHON2 = True
 
 try:
-    from imp import reload
-    PYTHON2 = False
-    # This is python3..
-except Exception as e:
-    # noop with e...
-    # This is python2..
     import sys
-    sys.setdefaultencoding('utf-8')
+    from imp import reload
     reload(sys)
+    sys.setdefaultencoding('utf-8')
+    # This is python2..
+    sys.stderr.write('PYTHON2=True\n')
+except Exception as e:
+    print(e)
+    # noop with e...
+    # This is python3..
+    PYTHON2 = False
+    sys.stderr.write('PYTHON2=False\n')
 
 import docopt
 from pyquery import PyQuery as pq
