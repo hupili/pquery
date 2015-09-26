@@ -33,9 +33,9 @@ try:
     # This is python2..
     #sys.stderr.write('PYTHON2=True\n')
 except Exception as e:
-    print(e)
     # noop with e...
     # This is python3..
+    #print(e)
     PYTHON2 = False
     #sys.stderr.write('PYTHON2=False\n')
 
